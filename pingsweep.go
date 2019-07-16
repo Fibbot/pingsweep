@@ -39,7 +39,6 @@ func runIP() {
 	for ip := ip.Mask(ipnet.Mask); ipnet.Contains(ip); inc(ip) {
 		if len(ip.String()) > 0 {
 			p.AddIP(ip.String())
-			//fmt.Println(ip.String())
 		}
 	}
 	fmt.Println("Hosts Up:")
