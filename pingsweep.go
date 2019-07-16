@@ -4,20 +4,11 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"regexp"
 	"time"
 
 	"github.com/tatsushid/go-fastping"
 )
 
-func findIP(input string) string {
-	//https://www.socketloop.com/tutorials/golang-find-ip-address-from-string
-	numBlock := "(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])"
-	regexPattern := numBlock + "\\." + numBlock + "\\." + numBlock + "\\." + numBlock
-
-	regEx := regexp.MustCompile(regexPattern)
-	return regEx.FindString(input)
-}
 func inc(ip net.IP) {
 	for j := len(ip) - 1; j >= 0; j-- {
 		ip[j]++
