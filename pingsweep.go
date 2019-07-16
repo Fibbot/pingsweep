@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"net"
 	"os"
+	"sort"
 	"time"
 
 	"github.com/tatsushid/go-fastping"
@@ -21,6 +23,9 @@ func runIP() {
 	userIP := os.Args[1]
 	userCIDR := os.Args[2]
 	ipStr := userIP + "/" + userCIDR
+
+	var ipsUp []string
+
 	ip, ipnet, err := net.ParseCIDR(ipStr)
 	if err != nil {
 		fmt.Println("ok")
@@ -32,26 +37,41 @@ func runIP() {
 			p.AddIP(ip.String())
 		}
 	}
-	fmt.Println("Hosts Up:")
-	fmt.Println("================================")
+
 	p.OnRecv = func(addr *net.IPAddr, rtt time.Duration) {
-		fmt.Printf("IP Addr: %s receive, RTT: %v\n", addr.String(), rtt)
+		//fmt.Printf("IP Addr: %s receive, RTT: %v\n", addr.String(), rtt)
+		ipsUp = append(ipsUp, addr.String())
 	}
 	p.OnIdle = func() {
-		fmt.Println("================================")
-		fmt.Println("finish")
+		fmt.Println("scan finished")
 	}
 	err = p.Run()
 	if err != nil {
 		fmt.Println(err)
 	}
 
+	fmt.Println("Hosts Up:")
+	fmt.Println("================================")
+	sortedIPs := make([]net.IP, 0, len(ipsUp))
+	for _, ips := range ipsUp {
+		sortedIPs = append(sortedIPs, net.ParseIP(ips))
+	}
+
+	sort.Slice(sortedIPs, func(i, j int) bool {
+		return bytes.Compare(sortedIPs[i], sortedIPs[j]) < 0
+	})
+	for _, ips := range sortedIPs {
+		fmt.Printf("%s\n", ips)
+	}
+
 }
 
 func main() {
-	fmt.Println("./binary 10.10.10.10 31")
-	fmt.Println("This will scan 10.10.10.10/31 and output all IP's in that range that are up")
-	fmt.Println("Due to running w/ raw sockets may have to sudo/run as root")
+	/*
+		- ./binary 10.10.10.1 24
+		- runs a scan on 10.10.10.1/24
+	*/
+	fmt.Println("Starting scan")
 	runIP()
 
 }

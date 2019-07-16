@@ -6,4 +6,12 @@ installation:
 - run compile.sh to compile for windows 32/64, linux 32/64, mac 64
 - can edit compile.sh to only compile for what you want
 
+running:
+- ./binary 10.10.10.1 24
+- runs a scan on 10.10.10.1/24
+
 note: due to using raw sockets, after compiling you will need to run binaries w/ sudo/root on mac/nix... not necessary with Windows
+
+
+to do:
+- fastping has the ability to use UDP as well, haven't added that in yet
