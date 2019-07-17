@@ -1,12 +1,14 @@
 been finding that i've needed to discover hosts on a subnet with machines that may or may not have typical enumeration tools already installed. 
-especially cloud hosted networks with a large subnet full of hosts that change ip's daily.
+especially prevalent in cloud hosted networks with a large subnet full of hosts that change ip's daily. this can help narrow down your scope and locate live hosts in a quick/efficient manner
 
 installation:
 - clone this into your go src folder
 - run compile.sh to compile for windows 32/64, linux 32/64, mac 64
 - can edit compile.sh to only compile for what you want
+- this will create the binaries to be copied onto the target machine(s)
 
-running:
+
+running example:
 - ./binary 10.10.10.1 24
 - runs a scan on 10.10.10.1/24
 
